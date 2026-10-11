@@ -642,3 +642,8 @@ div.asset-big { height: 140px; }
 .gl-frame-wrap.dragging .gl-frame { pointer-events: none; }
 .gl-frame-handle { position: absolute; top: 0; right: 0; z-index: 2; width: 12px; height: 100%; border-radius: 6px; background: #111111; cursor: ew-resize; touch-action: none; }
 .gl-frame-handle::after { content: ""; position: absolute; top: 50%; left: 4px; width: 4px; height: 36px; margin-top: -18px; border-left: 1px solid #fff; border-right: 1px solid #fff; }
+
+/* ---------- benvenuto ---------- */
+.welcome { max-width: 620px; }
+.welcome-beta { margin: 0 0 12px; padding: 8px 12px; border-left: 4px solid #8a5a00; background: var(--ui-code-bg); font-size: 14px; }
+.welcome-steps { margin: 0 0 14px; padding-left: 20px; display: grid; gap: 8px; line-height: 1.45; }

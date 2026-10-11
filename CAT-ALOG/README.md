@@ -1,5 +1,7 @@
 # CAT-ALOG
 
+**Installazione:** un solo file, `CAT-ALOG-Setup-1.1.0.exe` (vedi `INSTALLA.md`). Dentro c'è tutto: non serve Node.js.
+
 > ⚠️ **Versione BETA, di prova e sperimentale.** Possono esserci errori e cambiamenti; fai copie di sicurezza regolari della cartella dei dati (`Documenti\Catalogo MD`).
 
 App desktop personale (Electron) per tenere in un posto solo le tue **strutture flex**, i **componenti** (HTML, CSS, JS), le **classi** e le **variabili `:root`**: si modificano nell'app, si copiano con un clic, si esportano in cartelle vere da aprire in VS Code.
@@ -240,7 +242,7 @@ L'anteprima è una pagina isolata. Per far funzionare i componenti come sul sito
 - **Anteprime**: iframe isolato (senza accesso all'app né ai tuoi file).
 - **File**: nomi e percorsi validati (nessuna uscita dalla cartella dei dati), scritture atomiche, ripristino ZIP con controllo dei percorsi e limiti di dimensione contro le «bombe» ZIP.
 - **Dipendenze**: `npm audit` senza vulnerabilità.
-- **Aggiornamenti**: solo locali (`AGGIORNA.bat` con Git), nessun collegamento automatico a internet. Il repository può essere privato.
+- **Aggiornamenti**: nessun collegamento automatico a internet; per aggiornare si installa il nuovo `CAT-ALOG-Setup-<versione>.exe` sopra il vecchio (i dati restano).
 - **Limite noto**: la finestra principale non ha una Content-Security-Policy, perché le anteprime (che eseguono il JavaScript dei componenti) ne erediterebbero le regole e smetterebbero di funzionare.
 
 ## Connettore per Claude e estensione per VS Code

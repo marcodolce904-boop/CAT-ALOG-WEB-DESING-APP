@@ -1,5 +1,9 @@
 # Connettore per Claude e estensione per VS Code
 
+> **Con l'app installata non serve nulla di questo file:** apri CAT-ALOG → **Impostazioni → Integrazioni** e premi **Collega Claude Desktop** o **Installa l'estensione VS Code**. Il connettore usa lo stesso `CAT-ALOG.exe` (non serve Node.js) e l'estensione è già dentro l'installer.
+>
+> Le istruzioni qui sotto servono a chi lavora dalla cartella del codice sorgente.
+
 Tutto è **locale**: nessun server, nessuna porta aperta, nessun account. Claude e VS Code leggono e scrivono gli stessi file di CAT-ALOG (`Documenti\Catalogo MD`), con le stesse regole dell'app (nomi, versioni, cestino).
 
 ```

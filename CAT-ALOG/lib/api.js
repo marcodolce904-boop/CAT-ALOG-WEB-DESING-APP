@@ -59,7 +59,9 @@ const API_NAMES = [
   'addAssets',
   'removeAsset',
   'renameAsset',
-  'copy'
+  'copy',
+  'collegaClaude',
+  'installaVsCode'
 ];
 
 /*
@@ -323,6 +325,16 @@ function createApi(opzioni) {
         files.push(f);
       });
       return { annullato: false, cartella: dest, files: files };
+    },
+
+    /* Integrazioni (solo nell'app vera: le fa il processo principale) */
+    collegaClaude: async function (forza) {
+      if (!ui.collegaClaude) throw new Error('Non disponibile qui');
+      return ui.collegaClaude(forza === true);
+    },
+    installaVsCode: async function () {
+      if (!ui.installaVsCode) throw new Error('Non disponibile qui');
+      return ui.installaVsCode();
     },
 
     copy: async function (testo) {

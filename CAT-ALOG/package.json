@@ -1,17 +1,18 @@
 {
   "name": "cat-alog",
   "productName": "CAT-ALOG",
-  "version": "1.0.0",
-  "description": "App desktop personale: catalogo di strutture flex, componenti, classi e variabili root",
+  "version": "1.1.0",
+  "description": "CAT-ALOG (BETA): catalogo desktop di componenti per il web design, con anteprima dal vivo, collegamento a Claude e a VS Code",
   "main": "main.js",
   "license": "UNLICENSED",
   "private": true,
   "scripts": {
     "start": "electron .",
     "test": "node --test",
-    "dist": "electron-builder",
+    "dist": "node scripts/prepara-estensione.js && electron-builder --publish never",
     "smoke": "xvfb-run -a -s \"-screen 0 1440x900x24\" node scripts/smoke-electron.js",
-    "dist:win": "electron-builder --win"
+    "dist:win": "node scripts/prepara-estensione.js && electron-builder --win --publish never",
+    "estensione": "node scripts/prepara-estensione.js"
   },
   "build": {
     "appId": "com.catalog.catalog",
@@ -20,6 +21,8 @@
       "main.js",
       "preload.js",
       "lib/**",
+      "mcp/server.js",
+      "mcp/installa-desktop.js",
       "renderer/**",
       "build/icon.png",
       "package.json"
@@ -33,7 +36,8 @@
           ]
         }
       ],
-      "artifactName": "CAT-ALOG-Setup-${version}.${ext}"
+      "artifactName": "CAT-ALOG-Setup-${version}.${ext}",
+      "icon": "build/icon.png"
     },
     "mac": {
       "target": "dmg"
@@ -47,23 +51,43 @@
     "nsis": {
       "oneClick": false,
       "perMachine": false,
+      "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
-      "createDesktopShortcut": true,
+      "createDesktopShortcut": "always",
       "createStartMenuShortcut": true,
       "shortcutName": "CAT-ALOG",
+      "menuCategory": false,
+      "uninstallDisplayName": "CAT-ALOG (BETA)",
+      "license": "build/licenza.txt",
+      "installerLanguages": [
+        "it_IT"
+      ],
+      "language": "1040",
       "deleteAppDataOnUninstall": false,
-      "runAfterFinish": true
-    }
+      "runAfterFinish": true,
+      "artifactName": "CAT-ALOG-Setup-${version}.${ext}"
+    },
+    "copyright": "© 2026 CAT-ALOG — versione BETA di prova",
+    "extraResources": [
+      {
+        "from": "build/cat-alog.vsix",
+        "to": "cat-alog.vsix"
+      }
+    ],
+    "publish": null
   },
   "devDependencies": {
-    "@modelcontextprotocol/sdk": "^1.32.1",
+    "@vscode/vsce": "^3.9.2",
     "electron": "^44.5.1",
     "electron-builder": "^26.15.3",
-    "jsdom": "^30.1.1",
-    "zod": "^3.25.76"
+    "jsdom": "^30.1.1"
   },
   "engines": {
     "node": ">=20"
   },
-  "author": "CAT-ALOG"
+  "author": "CAT-ALOG",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.32.1",
+    "zod": "^3.25.76"
+  }
 }

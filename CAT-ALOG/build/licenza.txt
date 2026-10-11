@@ -1,0 +1,27 @@
+﻿CAT-ALOG — versione 1.1.0 BETA (di prova, sperimentale)
+
+Prima di installare, leggi queste poche righe.
+
+1. CHE COS'È
+CAT-ALOG è un'app desktop per conservare e riusare componenti per il web design (HTML, CSS, JavaScript), classi CSS e variabili :root, con anteprima dal vivo.
+
+2. VERSIONE BETA
+È una versione di prova, sperimentale. Può contenere errori e cambiare nelle prossime versioni. Non usarla ancora per lavori importanti senza copie di sicurezza: fai regolarmente un backup (nell'app: Impostazioni → Crea backup ZIP).
+
+3. I TUOI DATI
+L'app lavora solo sul tuo computer: nessun account, nessun invio di dati in rete.
+I dati stanno nella cartella Documenti\Catalogo MD e NON vengono cancellati se disinstalli o reinstalli l'app.
+
+4. COSA INSTALLA
+- Il programma CAT-ALOG (non serve installare altro: tutto il necessario è già dentro questo installer);
+- il collegamento sul Desktop e nel menu Start;
+- il programma di disinstallazione (Impostazioni di Windows → App → CAT-ALOG).
+Facoltativo, dall'app: il collegamento a Claude Desktop e l'estensione per VS Code.
+
+5. AVVISO DI WINDOWS
+L'installer non ha una firma digitale a pagamento: Windows può mostrare «PC protetto». Per continuare: «Ulteriori informazioni» → «Esegui comunque».
+
+6. NESSUNA GARANZIA
+Il software è fornito «così com'è», senza garanzie di alcun tipo. L'autore non è responsabile di eventuali danni o perdite di dati derivanti dal suo uso. Tutti i diritti riservati.
+
+Cliccando «Accetto» confermi di aver letto queste informazioni.

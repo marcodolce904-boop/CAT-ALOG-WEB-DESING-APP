@@ -54,7 +54,9 @@ const NAMES = [
   'addAssets',
   'removeAsset',
   'renameAsset',
-  'copy'
+  'copy',
+  'collegaClaude',
+  'installaVsCode'
 ];
 
 const api = {};

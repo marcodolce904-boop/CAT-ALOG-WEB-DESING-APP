@@ -15,7 +15,7 @@ L'utente lavora **a blocchi**, le prove le fa lui alla fine; vuole le istruzioni
 ## 2. Come si avvia (Windows)
 
 - `AVVIA.bat`: controlla Node.js, la prima volta fa `npm install`, poi `npm start`.
-- `AGGIORNA.bat`: fa `git pull` e poi avvia (serve solo se si usa ancora un repository Git: l'utente ha deciso di lavorare **solo in locale** e di **eliminare il repository GitHub**, quindi non serve più).
+- **Installer unico** (dalla 1.1.0): `CREA-INSTALLER.bat` → `dist\CAT-ALOG-Setup-<versione>.exe`. Installer NSIS in italiano con licenza/avviso beta, scelta cartella, collegamenti Desktop e Start, disinstallazione. Contiene il connettore Claude (gira con `CAT-ALOG.exe` + `ELECTRON_RUN_AS_NODE=1`, niente Node.js) e l'estensione VS Code (`resources/cat-alog.vsix`, con una copia di `lib/` dentro). In-app: guida di benvenuto alla prima apertura e Impostazioni → Integrazioni.
 - Installer (facoltativo): `npm run dist:win` → `dist\CAT-ALOG-Setup-….exe` (non provato su Windows).
 
 ## 3. Struttura del progetto

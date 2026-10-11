@@ -5,6 +5,7 @@ const { pathToFileURL } = require('url');
 const path = require('path');
 const { spawn } = require('child_process');
 const { createApi, API_NAMES } = require('./lib/api');
+const integrazioni = require('./lib/integrazioni');
 
 let win = null;
 let api = null;
@@ -89,6 +90,19 @@ function makeUi() {
     },
     copy: function (testo) {
       clipboard.writeText(testo);
+    },
+    /* Claude Desktop: il connettore usa lo stesso eseguibile dell'app in modalità Node, quindi non serve installare Node.js */
+    collegaClaude: async function (forza) {
+      try {
+        return { ok: true, file: integrazioni.collegaClaudeDesktop({ execPath: process.execPath, serverJs: path.join(__dirname, 'mcp', 'server.js'), forza: forza }) };
+      } catch (e) {
+        return { ok: false, irreparabile: !!e.irreparabile, messaggio: e.message };
+      }
+    },
+    /* VS Code: il pacchetto dell'estensione è dentro l'installer (resources/cat-alog.vsix) */
+    installaVsCode: async function () {
+      const vsix = app.isPackaged ? path.join(process.resourcesPath, 'cat-alog.vsix') : path.join(__dirname, 'build', 'cat-alog.vsix');
+      return integrazioni.installaVsix({ vsix: vsix });
     },
     openPath: async function (percorso) {
       const errore = await shell.openPath(percorso);

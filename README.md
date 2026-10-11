@@ -6,7 +6,7 @@
 
 > Windows desktop app (Electron). Everything stays on your computer: no account, no cloud, no network calls. The interface is in Italian.
 
-![beta](https://img.shields.io/badge/status-BETA%20%C2%B7%20experimental-orange) ![status](https://img.shields.io/badge/platform-Windows-blue) ![offline](https://img.shields.io/badge/works-offline-green) ![tests](https://img.shields.io/badge/tests-146%20passing-brightgreen)
+![beta](https://img.shields.io/badge/status-BETA%20%C2%B7%20experimental-orange) ![status](https://img.shields.io/badge/platform-Windows-blue) ![offline](https://img.shields.io/badge/works-offline-green) ![tests](https://img.shields.io/badge/tests-149%20passing-brightgreen)
 
 ---
 
@@ -76,23 +76,26 @@ Also: global search (`Ctrl+K`), backup and restore to ZIP, three themes (Cats, C
 - **Claude connector (MCP server)**, in `mcp/`. Lets Claude Desktop or Claude Code list, read, create and update catalog items, run the quality check, build a preview page and change `:root` variables. Runs locally over stdio, writes only inside the catalog folder, never deletes (trash only).
 - **VS Code extension**, in `vscode-extension/`. A sidebar tree of the catalog, one click to open an item's files side by side, a **live preview panel** that refreshes on every save, and a command to save the open file as a catalog item.
 
-Setup details: [`CAT-ALOG/CONNETTORI.md`](CAT-ALOG/CONNETTORI.md) (Italian).
+With the installed app, both are set up from **Settings → Integrations**. Source-folder setup: [`CAT-ALOG/CONNETTORI.md`](CAT-ALOG/CONNETTORI.md) (Italian).
 
-## Download (Windows installer, beta)
+## Install (Windows) — one single file
 
-A ready-made installer is published in **[Releases](https://github.com/marcodolce904-boop/CAT-ALOG-WEB-DESING-APP/releases/latest)**: download `CAT-ALOG-Setup-<version>.exe` and run it (choose the folder, desktop and Start-menu shortcuts are created).
+1. Download **`CAT-ALOG-Setup-1.1.0.exe`** from **[Releases](https://github.com/marcodolce904-boop/CAT-ALOG-WEB-DESING-APP/releases/latest)**. It is the **only file you need**: the app, its runtime, the VS Code extension and the Claude connector are all inside. **No Node.js or other software required.**
+2. Run it. Windows SmartScreen may say "Windows protected your PC" (the installer is unsigned): click **More info → Run anyway**.
+3. Follow the Italian setup wizard: accept the beta notice, choose the folder, **Install**, **Finish**. The app opens by itself.
+4. CAT-ALOG is now on your **Desktop** and in the **Start menu**, with an uninstaller in Windows Settings → Apps.
+5. On first launch a short **welcome guide** offers one-click setup of the integrations (also in **Settings → Integrations**):
+   - **Connect Claude Desktop**: the connector runs with the app's own executable, no Node.js needed;
+   - **Install the VS Code extension**: bundled in the installer, installed with VS Code's `code` command.
 
-- The installer is **unsigned**: Windows SmartScreen may say "Windows protected your PC". Click **More info → Run anyway**.
-- The installer contains the app only. The Claude connector and the VS Code extension are set up from the source folder (see below).
-- Releases are not rebuilt automatically any more: after new changes, build a fresh installer yourself with `CREA-INSTALLER.bat`.
+## Build the installer from source
 
-## Quick start from source (Windows)
+Requires [Node.js](https://nodejs.org) (LTS) on the build machine only.
 
-1. Install [Node.js](https://nodejs.org) (LTS).
-2. Download or clone this repository and open the `CAT-ALOG` folder.
-3. Double-click **`AVVIA.bat`** to run the app. The first run installs dependencies.
-4. Optional: double-click **`CREA-INSTALLER.bat`** to build a regular installer (`dist\CAT-ALOG-Setup-….exe`).
-5. Optional: run **`COLLEGA-CLAUDE-DESKTOP.bat`** (Claude connector) and **`COLLEGA-VSCODE.bat`** (VS Code extension).
+1. Open the `CAT-ALOG` folder and double-click **`CREA-INSTALLER.bat`**: it installs dependencies, runs the tests, packages the VS Code extension and builds **one file**, `dist\CAT-ALOG-Setup-<version>.exe`.
+2. To run without installing: **`AVVIA.bat`** (or `npm start`).
+
+Equivalent commands: `npm install`, `npm test`, `npm run dist:win`.
 
 Your data lives in `Documents\Catalogo MD` and is never touched by updates or reinstalls.
 
@@ -108,13 +111,13 @@ CAT-ALOG/
   renderer/               Interface: one script per tab
   mcp/                    Claude connector (Model Context Protocol server)
   vscode-extension/       VS Code extension
-  test/                   146 automated tests (node:test + jsdom, real MCP over stdio)
+  test/                   149 automated tests (node:test + jsdom, real MCP over stdio)
   scripts/                Real-browser component audit, Electron smoke test
 ```
 
 ## Quality and security
 
-- 146 automated tests; every library component is also audited in a real Chromium browser (errors, clicks, blank previews, overflow at 375 px).
+- 149 automated tests; every library component is also audited in a real Chromium browser (errors, clicks, blank previews, overflow at 375 px).
 - Electron hardening: context isolation, sandbox, no Node in the page, blocked navigation, no permissions granted, IPC accepted only from the app window.
 - ZIP restore protected against path traversal and "zip bombs"; file names and paths validated.
 - Known limits: the installer is unsigned (Windows SmartScreen shows a warning), and the main window has no Content-Security-Policy because previews execute the components' own JavaScript in isolated frames.

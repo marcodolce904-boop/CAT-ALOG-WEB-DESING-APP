@@ -214,6 +214,79 @@
     });
   }
 
+  /* ---------- integrazioni (Claude Desktop, VS Code) ---------- */
+
+  function collegaClaude(say) {
+    say('Collego CAT-ALOG a Claude Desktop…', false);
+    return Promise.resolve(window.api.collegaClaude(false))
+      .then(function (r) {
+        if (r && !r.ok && r.irreparabile) {
+          return App.askConfirm({
+            title: 'Il file di Claude Desktop è rovinato',
+            message: 'Non riesco a leggerlo. Posso scriverne uno nuovo: il vecchio resta come copia di sicurezza accanto. Le altre impostazioni di Claude Desktop andrebbero rifatte.',
+            okLabel: 'Scrivi un file nuovo',
+            danger: true
+          }).then(function (yes) { return yes ? window.api.collegaClaude(true) : null; });
+        }
+        return r;
+      })
+      .then(function (r) {
+        if (!r) return say('Collegamento annullato.', false);
+        if (!r.ok) return say(r.messaggio, true);
+        say('Fatto. Ora chiudi Claude Desktop del tutto (icona vicino all\'orologio → Esci) e riaprilo: tra gli strumenti compare «cat-alog».', false);
+      })
+      .catch(function (e) { say(App.cleanError(e), true); });
+  }
+
+  function installaVsCode(say) {
+    say('Installo l\'estensione in VS Code…', false);
+    return Promise.resolve(window.api.installaVsCode())
+      .then(function (r) { say(r.messaggio, !r.ok); })
+      .catch(function (e) { say(App.cleanError(e), true); });
+  }
+
+  /* ---------- benvenuto (solo alla prima apertura) ---------- */
+
+  var BENVENUTO = 'cat-benvenuto-1';
+
+  function showWelcome() {
+    return App.modal(function (d, finish) {
+      var msg = h('p', { class: 'muted', role: 'status' });
+      function say(text, isError) {
+        msg.textContent = text;
+        msg.className = isError ? 'form-error' : 'muted';
+      }
+      d.appendChild(
+        h('div', { class: 'modal-form welcome' }, [
+          h('h2', { text: 'Benvenuto in CAT-ALOG' }),
+          h('p', { class: 'welcome-beta', text: 'Versione BETA di prova: fai ogni tanto un backup (Impostazioni → Crea backup ZIP).' }),
+          h('ol', { class: 'welcome-steps' }, [
+            h('li', null, [h('strong', { text: 'Il catalogo è già pieno: ' }), 'più di 180 esempi tra strutture, componenti, animazioni e interazioni. Scegli una scheda in alto e clicca un elemento.']),
+            h('li', null, [h('strong', { text: 'I tuoi dati ' }), 'sono nella cartella ', h('code', { class: 'mono', text: App.config.dataDir || 'Documenti\\Catalogo MD' }), '. Restano lì anche se disinstalli o aggiorni l\'app.']),
+            h('li', null, [h('strong', { text: 'Facoltativo: ' }), 'collega Claude Desktop e VS Code (puoi farlo anche dopo, da Impostazioni → Integrazioni).'])
+          ]),
+          h('div', { class: 'btn-row' }, [
+            h('button', { type: 'button', class: 'btn small', text: 'Collega Claude Desktop', onclick: function () { collegaClaude(say); } }),
+            h('button', { type: 'button', class: 'btn small', text: 'Installa l\'estensione VS Code', onclick: function () { installaVsCode(say); } })
+          ]),
+          msg,
+          h('div', { class: 'modal-actions' }, [
+            h('button', { type: 'button', class: 'btn primary', text: 'Inizia', onclick: function () { finish(true); } })
+          ])
+        ])
+      );
+    });
+  }
+
+  function maybeWelcome() {
+    var seen = false;
+    try { seen = localStorage.getItem(BENVENUTO) === '1'; } catch (e) { seen = true; }
+    if (seen) return;
+    try { localStorage.setItem(BENVENUTO, '1'); } catch (e) { /* niente */ }
+    showWelcome();
+  }
+  App.showWelcome = showWelcome;
+
   /* ---------- impostazioni ---------- */
 
   function openSettings() {
@@ -356,6 +429,13 @@
                 .catch(function (e) { say(App.cleanError(e), true); });
             })
           ]),
+          h('div', { class: 'field' }, [h('span', { text: 'Integrazioni' })]),
+          h('p', { class: 'hint', text: 'Claude Desktop può leggere e creare elementi del catalogo; l\'estensione di VS Code mostra il catalogo con anteprima dal vivo. Non serve installare altro.' }),
+          h('div', { class: 'btn-row' }, [
+            small('Collega Claude Desktop', function () { collegaClaude(say); }),
+            small('Installa l\'estensione VS Code', function () { installaVsCode(say); }),
+            small('Guida di benvenuto', function () { finish(true); setTimeout(showWelcome, 0); })
+          ]),
           msg,
           h('div', { class: 'modal-actions' }, [
             h('button', { type: 'button', class: 'btn primary', text: 'Chiudi', onclick: function () { finish(true); } })
@@ -414,5 +494,6 @@
     .then(function () { return window.api.getConfig(); })
     .then(function (cfg) { App.config = cfg; })
     .catch(function (e) { App.toast(App.cleanError(e), true); })
-    .then(function () { return showTab(App.tabDefs[0].id); });
+    .then(function () { return showTab(App.tabDefs[0].id); })
+    .then(function () { maybeWelcome(); });
 })();

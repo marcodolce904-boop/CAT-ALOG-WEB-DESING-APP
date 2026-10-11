@@ -20,14 +20,16 @@ function isAppFolder(dir) {
   }
 }
 
-/* Trova la cartella dell'app: impostazione, poi le cartelle aperte in VS Code (anche una sopra). */
-function findAppPath(configured, workspaceDirs) {
+/* Trova la cartella con la logica dell'app: impostazione, cartelle aperte in VS Code (anche una sopra),
+   e per ultima la copia compresa nell'estensione (così funziona anche con la sola app installata). */
+function findAppPath(configured, workspaceDirs, bundled) {
   const candidati = [];
   if (configured) candidati.push(configured);
   (workspaceDirs || []).forEach(function (d) {
     candidati.push(d, path.join(d, 'CAT-ALOG'), path.dirname(d));
   });
-  for (const c of candidati) if (isAppFolder(c)) return path.resolve(c);
+  candidati.push(bundled === undefined ? path.join(__dirname, '..') : bundled);
+  for (const c of candidati) if (c && isAppFolder(c)) return path.resolve(c);
   return null;
 }
 

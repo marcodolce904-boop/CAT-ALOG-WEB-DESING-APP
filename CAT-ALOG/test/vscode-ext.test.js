@@ -21,7 +21,13 @@ test('estensione: trova l\'app, sceglie il tipo di file e legge i file «fratell
   assert.equal(core.findAppPath('', [path.join(APP, 'lib')]), APP, 'anche da una sottocartella');
   assert.equal(core.findAppPath('', [path.dirname(APP)]), APP, 'anche dalla cartella sopra');
   assert.equal(core.findAppPath(APP, []), APP);
-  assert.equal(core.findAppPath('', ['/non/esiste']), null);
+  assert.equal(core.findAppPath('', ['/non/esiste'], null), null);
+  /* con la sola app installata: usa la copia della logica compresa nell'estensione */
+  const fake = fs.mkdtempSync(path.join(process.env.TEST_TMPDIR || os.tmpdir(), 'catalogo-ext-'));
+  fs.mkdirSync(path.join(fake, 'lib'));
+  fs.writeFileSync(path.join(fake, 'lib', 'store.js'), '');
+  fs.writeFileSync(path.join(fake, 'lib', 'shared.js'), '');
+  assert.equal(core.findAppPath('', ['/non/esiste'], fake), path.resolve(fake));
   assert.equal(core.fieldFor('a/b.HTML'), 'html');
   assert.equal(core.fieldFor('x.mjs'), 'js');
   assert.equal(core.fieldFor('x.png'), null);

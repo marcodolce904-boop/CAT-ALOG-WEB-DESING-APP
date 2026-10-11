@@ -3,3 +3,6 @@ dist/
 *.log
 cat-alog.vsix
 mcp/claude-desktop.json
+
+vscode-extension/lib/
+build/cat-alog.vsix

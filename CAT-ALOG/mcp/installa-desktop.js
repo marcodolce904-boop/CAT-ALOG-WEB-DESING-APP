@@ -87,7 +87,7 @@ function mergeObjects(list) {
 }
 
 /* Aggiunge il connettore a UN file. Ritorna { file, creato, copia } oppure lancia un errore chiaro. */
-function installInto(file, serverJs, nodePath, forza) {
+function installInto(file, serverJs, nodePath, forza, env) {
   let data = {};
   let riparato = false;
   let ripartito = false;
@@ -123,6 +123,7 @@ function installInto(file, serverJs, nodePath, forza) {
   }
   if (!data.mcpServers || typeof data.mcpServers !== 'object' || Array.isArray(data.mcpServers)) data.mcpServers = {};
   data.mcpServers[NOME] = { command: nodePath, args: [serverJs] };
+  if (env && Object.keys(env).length) data.mcpServers[NOME].env = env;
   fs.writeFileSync(file, JSON.stringify(data, null, 2) + '\n', 'utf8');
   return { file: file, creato: !esisteva, copia: copia, riparato: riparato, ripartito: ripartito };
 }
@@ -140,7 +141,7 @@ function install(o) {
     const esistenti = c.filter(function (f) { return fs.existsSync(f); });
     files = esistenti.length ? esistenti : [c[0]];
   }
-  return files.map(function (f) { return installInto(f, serverJs, nodePath, !!opts.forza); });
+  return files.map(function (f) { return installInto(f, serverJs, nodePath, !!opts.forza, opts.serverEnv); });
 }
 
 function main() {
